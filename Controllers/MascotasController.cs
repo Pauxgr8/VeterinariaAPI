@@ -21,8 +21,17 @@ namespace VeterinariaAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var mascotas = _repository.LeerMascotas();
-            return Ok(mascotas);
+            try
+            {
+                var mascotas = _repository.LeerMascotas();
+                return Ok(mascotas);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+                return StatusCode(500, "Ocurrió un error interno.");
+            }
         }
 
         //=================================
@@ -31,12 +40,21 @@ namespace VeterinariaAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var mascota = _repository.BuscarPorId(id);
+            try
+            {
+                var mascota = _repository.BuscarPorId(id);
 
-            if (mascota == null)
-                return NotFound();
+                if (mascota == null)
+                    return NotFound();
 
-            return Ok(mascota);
+                return Ok(mascota);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+                return StatusCode(500, "Ocurrió un error interno.");
+            }
         }
 
         //=================================
@@ -45,8 +63,17 @@ namespace VeterinariaAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Mascota mascota)
         {
-            var id = _repository.CrearMascota(mascota);
-            return Ok(id);
+            try
+            {
+                var id = _repository.CrearMascota(mascota);
+                return Ok(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+                return StatusCode(500, "Ocurrió un error interno.");
+            }
         }
 
         //=================================
@@ -55,8 +82,17 @@ namespace VeterinariaAPI.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] Mascota mascota)
         {
-            _repository.ModificarMascota(mascota);
-            return Ok();
+            try
+            {
+                _repository.ModificarMascota(mascota);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+                return StatusCode(500, "Ocurrió un error interno.");
+            }
         }
 
         //=================================
@@ -65,8 +101,17 @@ namespace VeterinariaAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _repository.EliminarMascota(id);
-            return Ok();
+            try
+            {
+                _repository.EliminarMascota(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+
+                return StatusCode(500, "Ocurrió un error interno.");
+            }
         }
     }
 }

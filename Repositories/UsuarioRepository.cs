@@ -146,5 +146,33 @@ namespace VeterinariaAPI.Repositories
 
         }
 
+        public Usuario? Autenticar(string usuario, string clave)
+        {
+            using (SqlConnection conn = _conexion.ObtenerConexion())
+            {
+                conn.Open();
+
+                string query = "SELECT Id, Usuario, Estado FROM Usuarios WHERE Usuario = @Usuario AND Clave = @Clave AND Estado = 'A'";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Usuario", usuario);
+                cmd.Parameters.AddWithValue("@Clave", clave);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    return new Usuario
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        UsuarioLogin = dr["Usuario"].ToString(),
+                        Estado = dr["Estado"].ToString()
+                    };
+                }
+
+                return null;
+            }
+        }
+
     }
 }
