@@ -153,11 +153,15 @@ namespace VeterinariaAPI.Repositories
             {
                 conn.Open();
 
+                // 1. Eliminar hojas clínicas de la mascota
+                SqlCommand cmdHojas = new SqlCommand("DELETE FROM HojaClinica WHERE MascotaId = @Id", conn);
+                cmdHojas.Parameters.AddWithValue("@Id", id);
+                cmdHojas.ExecuteNonQuery();
+
+                // 2. Eliminar mascota
                 SqlCommand cmd = new SqlCommand("sp_EliminarMascota", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-
                 cmd.Parameters.AddWithValue("@Id", id);
-
                 cmd.ExecuteNonQuery();
 
                 return true;
